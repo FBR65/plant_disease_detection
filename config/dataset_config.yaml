@@ -1,0 +1,51 @@
+# Konfiguration für Datensätze
+data_path: "data/raw"
+processed_path: "data/processed"
+
+# Bildvorverarbeitung
+image_processing:
+  target_size: [224, 224]
+  color_mode: "rgb"
+  normalization: "imagenet"  # oder "0-1"
+
+# Datenaugmentation
+augmentation:
+  train:
+    rotation_range: 20
+    width_shift_range: 0.2
+    height_shift_range: 0.2
+    shear_range: 0.2
+    zoom_range: 0.2
+    horizontal_flip: true
+    vertical_flip: false
+    fill_mode: "nearest"
+  
+  validation:
+    # Keine Augmentation für Validierung
+    rotation_range: 0
+    horizontal_flip: false
+
+# Datenloader-Einstellungen
+dataloader:
+  batch_size: 32
+  shuffle: true
+  validation_split: 0.2
+  seed: 42
+
+# Klassenbezeichnungen
+classes:
+  - "healthy"
+  - "disease_A"
+  - "disease_B"
+
+# Datensatz-Pfade
+paths:
+  train: "data/raw/train"
+  validation: "data/raw/val"
+  metadata_file: "data/processed/metadata.csv"
+  embeddings_file: "data/processed/embeddings.json"
+
+# URL-Quellen (optional, für Datensammlung)
+data_sources:
+  kaggle_datasets: []
+  custom_urls: []

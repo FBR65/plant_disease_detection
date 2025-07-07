@@ -1,0 +1,84 @@
+# Modell-Konfiguration für Pflanzenkrankheitserkennung
+
+# Modellarchitektur
+model_architecture: "ResNet50"  # Optionen: ResNet50, EfficientNetB0, VGG16, Custom
+
+# Eingabeparameter
+input_shape: [224, 224, 3]
+num_classes: 3
+
+# Transfer Learning
+transfer_learning:
+  use_pretrained: true
+  pretrained_weights: "imagenet"
+  freeze_base_model: true
+  unfreeze_layers: 50  # Anzahl der Schichten für Fine-tuning
+
+# Netzwerkarchitektur
+architecture:
+  global_pooling: "average"  # average, max
+  dense_layers:
+    - units: 512
+      activation: "relu"
+      dropout: 0.5
+    - units: 256
+      activation: "relu"
+      dropout: 0.3
+  output_activation: "softmax"
+
+# Training-Parameter
+training:
+  optimizer: "adam"
+  learning_rate: 0.001
+  batch_size: 32
+  epochs: 50
+  
+  # Fine-tuning Parameter
+  fine_tune_learning_rate: 0.0001
+  fine_tune_epochs: 10
+
+# Loss und Metriken
+loss_function: "categorical_crossentropy"
+metrics:
+  - "accuracy"
+  - "top_k_categorical_accuracy"
+
+# Regularisierung
+regularization:
+  dropout_rate: 0.5
+  batch_normalization: true
+  l2_regularization: 0.0001
+
+# Callbacks
+callbacks:
+  early_stopping:
+    patience: 10
+    monitor: "val_loss"
+    restore_best_weights: true
+  
+  reduce_lr:
+    factor: 0.2
+    patience: 5
+    min_lr: 1.0e-7
+    monitor: "val_loss"
+  
+  model_checkpoint:
+    save_best_only: true
+    monitor: "val_accuracy"
+    mode: "max"
+
+# Modell-Speicherpfade
+model_paths:
+  checkpoint_dir: "models/classification_model/checkpoint"
+  best_model: "models/classification_model/best_model.h5"
+  final_model: "models/classification_model/final_model.h5"
+  fine_tuned_model: "models/classification_model/fine_tuned_model.h5"
+
+# Experimentelle Einstellungen
+experiment:
+  name: "plant_disease_classification_v1"
+  description: "Baseline-Modell für Pflanzenkrankheitserkennung"
+  tags:
+    - "computer_vision"
+    - "agriculture"
+    - "disease_detection"

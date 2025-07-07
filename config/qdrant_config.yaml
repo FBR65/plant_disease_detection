@@ -1,0 +1,68 @@
+# Qdrant Vektor-Datenbank Konfiguration
+
+# Qdrant Server-Verbindung
+connection:
+  host: "localhost"
+  port: 6333
+  timeout: 30
+  prefer_grpc: false
+
+# Oder für Qdrant Cloud
+# cloud_config:
+#   url: "https://your-cluster-url.qdrant.tech"
+#   api_key: "your-api-key"
+
+# Collection-Einstellungen
+collection:
+  name: "plant_disease_embeddings"
+  vector_size: 512  # Abhängig vom VLM-Modell
+  distance: "Cosine"  # Cosine, Dot, Euclid
+
+# Indexing-Parameter
+indexing:
+  hnsw_config:
+    m: 16
+    ef_construct: 100
+    full_scan_threshold: 10000
+  
+  # Quantization (optional für Performance)
+  quantization:
+    scalar:
+      type: "int8"
+      quantile: 0.99
+      always_ram: true
+
+# Batch-Upload Einstellungen
+batch_upload:
+  batch_size: 100
+  parallel_uploads: 4
+  retry_count: 3
+
+# Suche-Einstellungen
+search:
+  default_limit: 10
+  max_limit: 100
+  ef: 128  # Genauigkeit vs. Geschwindigkeit
+  exact: false
+
+# Payload-Schema
+payload_schema:
+  image_path: "keyword"
+  category: "keyword"
+  split: "keyword"
+  filename: "keyword"
+  confidence: "float"
+  embedding_version: "integer"
+
+# Datenbank-Wartung
+maintenance:
+  backup_enabled: true
+  backup_path: "backups/qdrant/"
+  cleanup_old_backups: true
+  max_backup_age_days: 30
+
+# Logging
+logging:
+  level: "INFO"
+  log_queries: false
+  log_responses: false
