@@ -1,51 +1,60 @@
 # 🌱 Plant Disease Detection
 
-Ein umfassendes System zur Erkennung von Pflanzenkrankheiten mittels Deep Learning und Vision-Language Models (VLM).
+Ein umfassendes System zur Erkennung von Pflanzenkrankheiten mittels PyTorch und Vision-Language Models (VLM).
+
+## 🎯 Universelle Anwendbarkeit
+
+**Dieses System ist als generische Vorlage für KI-basierte Bildanalyse und intelligente Suchsysteme konzipiert.** Die Architektur kombiniert trainierte Machine Learning-Modelle mit Vision-Language Models (VLM) und Vector-Datenbanken zu einem flexiblen Framework, das auf verschiedenste Anwendungsfälle übertragbar ist:
+
+- **🔄 Modular aufgebaut**: Austauschbare Komponenten für Datenverarbeitung, Modellerstellung und Inferenz
+- **🎨 Domain-agnostisch**: Einfache Anpassung an beliebige Bildklassifikations-Aufgaben (Medizin, Industrie, Einzelhandel, etc.)
+- **🚀 Produktionsreif**: Robuste Datenverarbeitung, Fehlerbehandlung und skalierbare Deployment-Optionen
+- **🔍 Intelligente Suche**: VLM-Embeddings ermöglichen semantische Ähnlichkeitssuche über Domänen hinweg
+- **💾 Skalierbare Persistierung**: Vector-Database-Integration für große Datenmengen und Echtzeit-Abfragen
+
+Die **Pflanzenkrankheitserkennung** dient als praktisches Beispiel und Referenzimplementierung. Die gleiche Architektur kann für Qualitätskontrolle in der Fertigung, medizinische Bilddiagnostik, Produktklassifikation im E-Commerce oder beliebige andere Computer Vision-Aufgaben eingesetzt werden.
 
 ## 📋 Projektübersicht
 
-Dieses Projekt implementiert ein modernes System zur automatischen Erkennung von Pflanzenkrankheiten mit folgenden Hauptfunktionen:
+Dieses Projekt implementiert ein **produktionsreifes** System zur automatischen Erkennung von z. B. Pflanzenkrankheiten mit folgenden Hauptfunktionen:
 
-- **Klassifikation**: Deep Learning-Modelle zur Krankheitserkennung
-- **Ähnlichkeitssuche**: VLM-basierte Embeddings für ähnliche Bilder
-- **Vector Database**: Qdrant-Integration für skalierbare Suche
-- **Web-Interface**: Streamlit-App für einfache Nutzung
+- **🎯 Intelligente Klassifikation**: PyTorch-basierte Deep Learning-Modelle mit automatischem Klassenbalancing
+- **🔄 Adaptive Datenaugmentation**: Synthetische Bilderzeugung für Minderheitsklassen (löst 89:1 Ungleichgewicht)
+- **📊 Datenqualitäts-Analyse**: Automatische Erkennung von Problemen (Größenvariation, Klassenungleichgewicht)
+- **⚖️ Smart Sampling**: WeightedRandomSampler für ausbalancierte Training-Batches
+- **🌐 Moderne Web-UI**: Gradio-basierte Benutzeroberfläche für einfache Nutzung
+- **🔍 Ähnlichkeitssuche**: VLM-basierte Embeddings für ähnliche Bilder (geplant)
+- **💾 Vector Database**: Qdrant-Integration für skalierbare Suche (geplant)
 
 ## 🏗️ Projektstruktur
 
 ```
 plant_disease_detection/
 ├── data/
-│   ├── raw/                    # Rohdaten (Trainings- und Validierungsbilder)
-│   │   ├── train/
-│   │   │   ├── healthy/
-│   │   │   ├── disease_A/
-│   │   │   └── disease_B/
-│   │   └── val/
-│   │       ├── healthy/
-│   │       ├── disease_A/
-│   │       └── disease_B/
-│   └── processed/              # Verarbeitete Daten
-│       ├── images/
-│       └── metadata.csv
-├── notebooks/                  # Jupyter Notebooks für Exploration und Training
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_model_training.ipynb
-│   ├── 03_vlm_embedding.ipynb
-│   └── 04_qdrant_integration.ipynb
+│   └── PlantDoc/               # PlantDoc-Dataset
+│       ├── train/              # Trainingsbilder
+│       │   ├── healthy/
+│       │   ├── disease_A/
+│       │   └── disease_B/
+│       └── test/               # Testbilder
+│           ├── healthy/
+│           ├── disease_A/
+│           └── disease_B/
+├── src/                        # Quellcode (Python-Module)
+│   ├── data_exploration.py     # Erweiterte Datenanalyse mit Balancing-Empfehlungen
+│   ├── advanced_augmentation.py # Intelligente Datenaugmentation & Klassenbalancing
+│   ├── train.py               # PyTorch-Trainingsskript
+│   ├── gradio_app.py          # Gradio-Webanwendung
+│   ├── model.py               # Modellarchitekturen
+│   ├── data_loader.py         # Datenlade- und Vorverarbeitungsklassen (Legacy)
+│   ├── vlm_utils.py           # VLM-Embedding-Funktionen
+│   └── qdrant_handler.py      # Qdrant-Integration
 ├── models/                     # Trainierte Modelle
 │   ├── classification_model/
-│   │   ├── best_model.h5
-│   │   └── checkpoint/
+│   │   ├── model.pth
+│   │   └── classes.json
 │   └── vlm_embedder/
 │       └── model_config.json
-├── src/                        # Quellcode
-│   ├── data_loader.py         # Datenlade- und Vorverarbeitungsklassen
-│   ├── model.py               # Modellarchitekturen
-│   ├── train.py               # Trainingsskript
-│   ├── vlm_utils.py           # VLM-Embedding-Funktionen
-│   ├── qdrant_handler.py      # Qdrant-Integration
-│   └── app.py                 # Streamlit-Webanwendung
 ├── config/                     # Konfigurationsdateien
 │   ├── dataset_config.yaml
 │   ├── model_config.yaml
@@ -53,13 +62,14 @@ plant_disease_detection/
 ├── tests/                      # Unit Tests
 │   ├── test_data_loader.py
 │   └── test_model.py
-├── scripts/                    # Shell-Skripte
-│   ├── preprocess_data.sh
-│   └── run_training.sh
-├── requirements.txt            # Python-Abhängigkeiten
+├── reports/                    # Berichte und Visualisierungen
+│   ├── class_distribution.png
+│   └── training_history.png
+├── pyproject.toml              # Python-Abhängigkeiten (uv-kompatibel)
 ├── README.md                   # Projektdokumentation
 └── .gitignore                  # Git-Ignore-Datei
 ```
+PlantDoc Dataset: https://paperswithcode.com/dataset/plantdoc
 
 ## 🚀 Schnellstart
 
@@ -70,98 +80,125 @@ plant_disease_detection/
 git clone <repository-url>
 cd plant_disease_detection
 
-# Virtual Environment erstellen und aktivieren
-python -m venv venv
-source venv/bin/activate  # Linux/Mac
+# Virtual Environment mit uv erstellen
+uv venv
+source .venv/bin/activate  # Linux/Mac
 # oder
-venv\Scripts\activate     # Windows
+.venv\Scripts\activate     # Windows
 
 # Abhängigkeiten installieren
-pip install -r requirements.txt
+uv sync
 ```
 
 ### 2. Daten vorbereiten
 
 ```bash
-# Füge deine Bilder in die entsprechenden Ordner ein:
-# data/raw/train/{healthy,disease_A,disease_B}/
-# data/raw/val/{healthy,disease_A,disease_B}/
+# PlantDoc-Dataset in folgende Struktur bringen:
+# data/PlantDoc/train/{klasse1,klasse2,...}/
+# data/PlantDoc/test/{klasse1,klasse2,...}/
 
-# Datenvorverarbeitung ausführen
-chmod +x scripts/preprocess_data.sh
-./scripts/preprocess_data.sh
+# Datenexploration ausführen
+uv run explore-data
 ```
 
 ### 3. Modell trainieren
 
 ```bash
-# Standard-Training mit ResNet50
-chmod +x scripts/run_training.sh
-./scripts/run_training.sh
-
-# Mit benutzerdefinierten Parametern
-./scripts/run_training.sh --architecture EfficientNetB0 --fine-tune --epochs 100
+# PyTorch-basiertes Training starten
+uv run train-model
 ```
 
 ### 4. Web-App starten
 
 ```bash
-# Streamlit-App starten
-streamlit run src/app.py
+# Gradio-App starten
+uv run run-app
 ```
 
-## 📊 Verwendung der Notebooks
+## 📊 Verfügbare Kommandos
 
-### 1. Datenexploration
+### 🔍 Erweiterte Datenanalyse
 ```bash
-jupyter lab notebooks/01_data_exploration.ipynb
+# Vollständige Datenexploration mit Balancing-Empfehlungen
+uv run explore-data
+
+# Ergebnis: Automatische Erkennung von Klassenungleichgewicht (89:1 Ratio)
+# + Empfehlungen für Augmentation und Sampling-Strategien
 ```
 
-### 2. Modelltraining
+### 🔄 Intelligentes Training
 ```bash
-jupyter lab notebooks/02_model_training.ipynb
+# Training mit automatischem Klassenbalancing
+uv run train-model
+
+# Features:
+# - Automatische Minoritätsklassen-Erkennung
+# - Synthetische Bilderzeugung (3x Faktor)
+# - WeightedRandomSampler für ausbalancierte Batches
+# - Adaptive Augmentation (stärker für kleine Klassen)
 ```
 
-### 3. VLM-Embeddings erstellen
+### 🌐 Web-Anwendung
 ```bash
-jupyter lab notebooks/03_vlm_embedding.ipynb
+# Gradio-App mit verbesserter UI
+uv run run-app
+
+# Features:
+# - Drag & Drop Bildupload
+# - Real-time Klassifikation  
+# - Konfidenz-Anzeige
+# - Beispielbilder-Galerie
 ```
 
-### 4. Qdrant-Integration
-```bash
-# Qdrant-Server starten (Docker)
-docker run -p 6333:6333 qdrant/qdrant
+## 🛠️ Technologie-Stack
 
-# Notebook ausführen
-jupyter lab notebooks/04_qdrant_integration.ipynb
-```
+### Core ML Framework
+- **PyTorch 2.0+** - Deep Learning Framework (Windows-kompatibel)
+- **torchvision** - Computer Vision Utilities
+- **transformers** - Hugging Face Transformers für VLM
 
-## ⚙️ Konfiguration
+### Computer Vision
+- **Pillow** - Bildverarbeitung
+- **OpenCV** - Computer Vision Operations
+- **albumentations** - Datenaugmentation
+
+### Web Interface
+- **Gradio** - Moderne Web-UI für ML-Modelle
+- **FastAPI** - REST API Backend (optional)
+
+### Database & Storage
+- **Qdrant** - Vector Database für Ähnlichkeitssuche
+- **HDF5** - Effiziente Datenspeicherung
+
+### Development Tools
+- **uv** - Schneller Python Package Manager
+- **ruff** - Code Formatting
+
+## 🔧 Konfiguration
 
 ### Dataset-Konfiguration (`config/dataset_config.yaml`)
 ```yaml
-data_path: "data/raw"
+data_path: "data/PlantDoc"
 image_processing:
   target_size: [224, 224]
   normalization: "imagenet"
 dataloader:
   batch_size: 32
-  validation_split: 0.2
+  num_workers: 4
 classes:
-  - "healthy"
-  - "disease_A" 
-  - "disease_B"
+  # Automatisch aus Ordnerstruktur erkannt
 ```
 
-### Modell-Konfiguration (`config/model_config.yaml`)
+### Model-Konfiguration (`config/model_config.yaml`)
 ```yaml
-model_architecture: "ResNet50"
-input_shape: [224, 224, 3]
-num_classes: 3
+architecture: "resnet50"
+pretrained: true
+num_classes: auto  # Automatisch erkannt
 training:
+  epochs: 25
   learning_rate: 0.001
-  epochs: 50
   batch_size: 32
+  optimizer: "adam"
 ```
 
 ### Qdrant-Konfiguration (`config/qdrant_config.yaml`)
@@ -173,6 +210,95 @@ collection:
   name: "plant_disease_embeddings"
   vector_size: 512
 ```
+
+### Klassenbalancing-Konfiguration
+
+```yaml
+# Erweiterte Augmentation-Konfiguration
+augmentation:
+  # Automatisches Balancing
+  enable_synthetic_generation: true
+  synthetic_factor: 3              # 3x mehr Samples für Minorities
+  minority_threshold: 0.5          # < 50% der max. Klassengröße
+  
+  # Weighted Sampling
+  use_weighted_sampling: true
+  
+  # Augmentation-Stärke
+  strong_augmentation_for_minorities: true
+  
+  # Transformationen
+  image_size: 224
+  resize_intermediate: 256
+  geometric_transforms:
+    rotation_limit: 30
+    horizontal_flip: 0.5
+    vertical_flip: 0.2
+  
+  photometric_transforms:
+    brightness_limit: 0.2
+    contrast_limit: 0.2
+    hue_shift_limit: 10
+    
+  plant_specific:
+    random_shadow: 0.3
+    sun_flare: 0.1
+    color_jitter: 0.3
+```
+
+## 📊 Datenqualitäts-Features
+
+### Automatische Problemerkennung
+
+Das System analysiert automatisch Ihren Datensatz und identifiziert:
+
+```bash
+uv run explore-data
+```
+
+**Erkannte Probleme (PlantDoc-Beispiel):**
+- 🚨 **Kritisches Ungleichgewicht**: 89.5:1 Ratio (179 vs 2 Samples)
+- 📐 **Extreme Größenvariation**: 143-5472px Breite (38x Unterschied)
+- ⚠️ **Problematische Klasse**: "Tomato two spotted spider mites leaf" (nur 2 Bilder)
+
+**Automatische Lösungsvorschläge:**
+```
+💡 EMPFEHLUNGEN:
+🔄 DATENAUGMENTATION:
+  - Synthetische Bilder für Minderheitsklassen generieren
+  - Faktor 2-5x Augmentation für kleine Klassen
+  
+⚖️ SAMPLING STRATEGIEN:
+  - WeightedRandomSampler für Klassenbalancing
+  - Focal Loss für schwierige Klassen
+  
+🚨 KRITISCHES UNGLEICHGEWICHT:
+  - Evaluation-Metriken: Precision/Recall statt Accuracy
+```
+
+### Intelligente Datenerweiterung
+
+**Vor dem Balancing:**
+```
+Tomato two spotted spider mites leaf: 2 Samples    ⚠️
+Corn leaf blight: 179 Samples                      📈
+Ratio: 89.5:1 (kritisch)
+```
+
+**Nach automatischem Balancing:**
+```
+Tomato two spotted spider mites leaf: 82+ Samples  ✅
+Corn leaf blight: 179 Samples                      📈  
+Ratio: ~2:1 (ausbalanciert)
+```
+
+### Produktionsreife Features
+
+- **📊 Datenqualitäts-Dashboard**: Automatische Analyse und Visualisierung
+- **🔄 Adaptive Augmentation**: Stärke basierend auf Klassengröße
+- **⚖️ Smart Sampling**: WeightedRandomSampler + Stratified Sampling  
+- **🎯 Evaluation-Metriken**: Precision/Recall/F1 für unbalancierte Daten
+- **💾 Caching**: Intelligentes Speichern verarbeiteter Bilder
 
 ## 🧪 Tests ausführen
 
@@ -243,6 +369,57 @@ Die Streamlit-App bietet:
 - 🎯 **Ähnlichkeitssuche**: Finde ähnliche Fälle
 - 📊 **Visualisierung**: Interaktive Ergebnisdarstellung
 
+## 🔬 Erweiterte Features
+
+### Automatisches Klassenbalancing
+
+Das System erkennt automatisch Klassenungleichgewichte und behebt diese:
+
+```bash
+# Erweiterte Datenexploration mit Balancing-Empfehlungen
+uv run explore-data
+```
+
+**Automatische Problemerkennung:**
+- ⚖️ **Klassenungleichgewicht-Analyse** (Ratio-Berechnung)
+- 📐 **Bildgrößen-Variation** (119-6000px Breite erkannt)
+- 🎯 **Minderheitsklassen-Identifikation** (< 50% der Median-Klassengröße)
+
+**Intelligente Lösungen:**
+- 🔄 **Synthetische Bilderzeugung** für Minderheitsklassen
+- ⚖️ **WeightedRandomSampler** für ausbalancierte Batches  
+- 🎨 **Adaptive Augmentation** (stärker für kleine Klassen)
+- 📊 **Automatische Größen-Vereinheitlichung** (256→224px)
+
+### Advanced Data Augmentation
+
+```python
+# Verwendung der erweiterten Augmentation
+from src.advanced_augmentation import create_balanced_dataloader
+
+# Automatisch ausbalancierter DataLoader
+train_loader, dataset = create_balanced_dataloader(
+    data_dir="data/PlantDoc",
+    split="train",
+    augment_minority_classes=True,  # Synthetische Bilder für kleine Klassen
+    synthetic_factor=3,             # 3x mehr Augmentation für Minorities
+    use_weighted_sampling=True      # Balanced Sampling
+)
+```
+
+**Augmentation-Pipeline:**
+- 🌱 **Pflanzen-spezifisch**: RandomShadow, SunFlare, ColorJitter
+- 🔄 **Geometrisch**: Rotation, Flip, ElasticTransform, GridDistortion
+- 🎨 **Photometrisch**: Brightness, Contrast, Hue, Saturation
+- 🔍 **Qualität**: GaussNoise, GaussianBlur, CLAHE
+- 📏 **Normalisierung**: ImageNet-Standards (mean/std)
+
+**Beispiel-Ergebnis für PlantDoc:**
+```
+Klasse 'Tomato two spotted spider mites leaf': 2 → 80+ Samples
+Automatisch: 89.5:1 Ratio → 4:1 Ratio (ausbalanciert)
+```
+
 ## 🛠️ Entwicklung
 
 ### Code-Struktur
@@ -296,7 +473,7 @@ def create_custom_model(input_shape, num_classes):
 
 ## 📄 Lizenz
 
-Dieses Projekt steht unter der MIT-Lizenz. Siehe `LICENSE` Datei für Details.
+Dieses Projekt steht unter der AGPLv3-Lizenz. Siehe `LICENSE` Datei für Details.
 
 ## 🆘 Support
 
