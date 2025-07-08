@@ -103,6 +103,12 @@ class AdvancedPlantDataset(Dataset):
         """Sammelt alle Bilddateien"""
         split_dir = self.data_dir / self.split
 
+        # Prüfe ob der Pfad existiert
+        if not split_dir.exists():
+            raise FileNotFoundError(f"Datenverzeichnis nicht gefunden: {split_dir}")
+
+        print(f"📁 Suche Daten in: {split_dir}")
+
         for class_dir in split_dir.iterdir():
             if class_dir.is_dir():
                 class_name = class_dir.name
