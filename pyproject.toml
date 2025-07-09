@@ -30,10 +30,17 @@ dependencies = [
     # Web App
     "gradio>=3.35.0",
     "fastapi>=0.100.0",
+    # Vector Database & AI Agent
+    "qdrant-client>=1.7.0",
+    "pydantic-ai>=0.0.14",
+    "openai>=1.0.0",
     # Utilities
     "tqdm>=4.64.0",
     "requests>=2.28.0",
     "ipykernel>=6.29.5",
+    "psutil>=7.0.0",
+    "python-dotenv>=1.1.1",
+    "hf-xet>=1.1.5",
 ]
 
 [project.optional-dependencies]
@@ -75,6 +82,7 @@ deployment = [
 train-model = "src.train:main"
 run-app = "src.gradio_app:main"
 explore-data = "src.data_exploration:main"
+setup-qdrant = "scripts.setup_qdrant:main"
 
 [build-system]
 requires = ["hatchling"]
