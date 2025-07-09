@@ -1,6 +1,6 @@
 # 🌱 Plant Disease Detection
 
-![Plant Disease Detection Frontend Test](https://github.com/frontend.png)
+![Plant Disease Detection Frontend Test](https://github.com/FBR65/plant_disease_detection/blob/master/frontend.png)
 
 **Ein vollständig integriertes Multi-KI-System** zur Erkennung von Pflanzenkrankheiten mittels PyTorch, Qdrant Vector Database und LLM-Integration.
 
