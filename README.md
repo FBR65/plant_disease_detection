@@ -472,25 +472,6 @@ Ratio: ~2:1 (ausbalanciert)
 - **Integrierte Gradio-UI**: Multi-System-Dashboard
 - **Intelligente Datenanalyse**: Automatische Qualitätsprüfung
 
-### 🚧 In Entwicklung
-- **API-Endpoints**: REST API für externe Integration
-- **Advanced VLM**: Mehrere VLM-Modelle im Vergleich
-
-### 🎯 Geplant
-- **Fine-tuning Pipeline**: Automatisches Model-Fine-tuning
-- **Docker-Deployment**: Containerisierte Bereitstellung
-- **Model-Versioning**: MLflow/W&B-Integration
-
-## 🧪 Tests ausführen
-
-```bash
-# Alle Tests
-python -m pytest tests/ -v
-
-# Spezifische Tests
-python -m pytest tests/test_data_loader.py -v
-python -m pytest tests/test_model.py -v
-```
 
 ## 📈 Modellarchitekturen
 
